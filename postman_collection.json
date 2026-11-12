@@ -1,0 +1,116 @@
+{
+  "info": {
+    "name": "Expense Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/health" }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": { "method": "POST", "url": "{{baseUrl}}/api/auth/logout" }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        { "name": "List Categories", "request": { "method": "GET", "url": "{{baseUrl}}/api/categories" } },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Food\",\n  \"type\": \"expense\"\n}" },
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Groceries\"\n}" },
+            "url": "{{baseUrl}}/api/categories/:id"
+          }
+        },
+        { "name": "Delete Category", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/categories/:id" } }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List Transactions",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/transactions?type=expense&page=1&limit=10" }
+        },
+        {
+          "name": "Create Transaction (multipart)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Groceries", "type": "text" },
+                { "key": "amount", "value": "45.50", "type": "text" },
+                { "key": "type", "value": "expense", "type": "text" },
+                { "key": "date", "value": "2026-01-15", "type": "text" },
+                { "key": "notes", "value": "Weekly shop", "type": "text" },
+                { "key": "attachments", "type": "file" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/transactions"
+          }
+        },
+        { "name": "Get Transaction", "request": { "method": "GET", "url": "{{baseUrl}}/api/transactions/:id" } },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 50\n}" },
+            "url": "{{baseUrl}}/api/transactions/:id"
+          }
+        },
+        { "name": "Get Summary", "request": { "method": "GET", "url": "{{baseUrl}}/api/transactions/summary?groupBy=category" } },
+        {
+          "name": "Delete Attachment",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/transactions/:id/attachments/:attachmentId" }
+        },
+        { "name": "Delete Transaction", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/transactions/:id" } }
+      ]
+    }
+  ]
+}

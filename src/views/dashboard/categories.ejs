@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+  <main class="container page page-narrow">
+    <h1>Categories</h1>
+    <div id="form-message" class="form-message" hidden></div>
+
+    <form id="category-form" class="card-form inline-form" novalidate>
+      <input type="text" id="name" name="name" placeholder="Category name" required maxlength="50" />
+      <select id="type" name="type" required>
+        <option value="expense">Expense</option>
+        <option value="income">Income</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Add Category</button>
+    </form>
+
+    <section class="panel">
+      <% if (categories.length === 0) { %>
+        <p class="empty-state">No categories yet. Add one above.</p>
+      <% } else { %>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% categories.forEach(function(c) { %>
+              <tr>
+                <td><%= c.name %></td>
+                <td><span class="badge badge-<%= c.type %>"><%= c.type %></span></td>
+                <td class="text-right">
+                  <button class="link danger delete-category" data-id="<%= c._id %>">Delete</button>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+  </main>
+<%- include('../partials/footer') %>
+</body>
+</html>

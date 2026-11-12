@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+  <main class="container page page-narrow">
+    <div class="page-header">
+      <h1><%= transaction.title %></h1>
+      <div class="row-actions">
+        <a href="/transactions/<%= transaction._id %>/edit" class="btn btn-secondary">Edit</a>
+        <button class="btn btn-danger delete-transaction" data-id="<%= transaction._id %>" data-redirect="/transactions">Delete</button>
+      </div>
+    </div>
+
+    <section class="panel detail-grid">
+      <div><span class="label">Type</span><span class="badge badge-<%= transaction.type %>"><%= transaction.type %></span></div>
+      <div><span class="label">Amount</span><span><%= transaction.type === 'expense' ? '-' : '+' %>₹<%= transaction.amount.toFixed(2) %></span></div>
+      <div><span class="label">Category</span><span><%= transaction.categoryId ? transaction.categoryId.name : '—' %></span></div>
+      <div><span class="label">Date</span><span><%= new Date(transaction.date).toLocaleDateString() %></span></div>
+      <div class="full"><span class="label">Notes</span><span><%= transaction.notes || '—' %></span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Attachments</h2>
+      <% if (transaction.attachments.length === 0) { %>
+        <p class="empty-state">No attachments uploaded.</p>
+      <% } else { %>
+        <ul class="attachment-list">
+          <% transaction.attachments.forEach(function(a) { %>
+            <li>
+              <a href="<%= a.url %>" target="_blank" rel="noopener noreferrer"><%= a.originalName || a.publicId %></a>
+              <span class="muted"><%= (a.bytes / 1024).toFixed(0) %> KB</span>
+              <button
+                class="link danger delete-attachment"
+                data-transaction-id="<%= transaction._id %>"
+                data-attachment-id="<%= a._id %>"
+              >Remove</button>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </section>
+  </main>
+<%- include('../partials/footer') %>
+</body>
+</html>

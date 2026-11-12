@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+  <main class="container page">
+    <h1>Dashboard</h1>
+
+    <section class="summary-grid">
+      <div class="summary-card income">
+        <span class="summary-label">Income</span>
+        <span class="summary-value">₹<%= summary.income.toFixed(2) %></span>
+      </div>
+      <div class="summary-card expense">
+        <span class="summary-label">Expenses</span>
+        <span class="summary-value">₹<%= summary.expense.toFixed(2) %></span>
+      </div>
+      <div class="summary-card balance <%= summary.balance >= 0 ? 'positive' : 'negative' %>">
+        <span class="summary-label">Balance</span>
+        <span class="summary-value">₹<%= summary.balance.toFixed(2) %></span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Recent Transactions</h2>
+        <a href="/transactions" class="link">View all</a>
+      </div>
+
+      <% if (recentTransactions.length === 0) { %>
+        <p class="empty-state">No transactions yet. <a href="/transactions/add">Add your first one</a>.</p>
+      <% } else { %>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% recentTransactions.forEach(function(tx) { %>
+              <tr onclick="window.location='/transactions/<%= tx._id %>'">
+                <td><%= new Date(tx.date).toLocaleDateString() %></td>
+                <td><%= tx.title %></td>
+                <td><%= tx.categoryId ? tx.categoryId.name : '—' %></td>
+                <td><span class="badge badge-<%= tx.type %>"><%= tx.type %></span></td>
+                <td class="text-right"><%= tx.type === 'expense' ? '-' : '+' %>₹<%= tx.amount.toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+  </main>
+<%- include('../partials/footer') %>
+</body>
+</html>

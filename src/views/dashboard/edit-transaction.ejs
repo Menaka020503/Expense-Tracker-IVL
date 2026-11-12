@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+  <main class="container page page-narrow">
+    <h1>Edit Transaction</h1>
+    <div id="form-message" class="form-message" hidden></div>
+
+    <form id="transaction-form" class="card-form" data-id="<%= transaction._id %>" enctype="multipart/form-data" novalidate>
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required maxlength="120" value="<%= transaction.title %>" />
+
+      <div class="form-row">
+        <div>
+          <label for="type">Type</label>
+          <select id="type" name="type" required>
+            <option value="expense" <%= transaction.type === 'expense' ? 'selected' : '' %>>Expense</option>
+            <option value="income" <%= transaction.type === 'income' ? 'selected' : '' %>>Income</option>
+          </select>
+        </div>
+        <div>
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" name="amount" step="0.01" min="0.01" required value="<%= transaction.amount %>" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="categoryId">Category</label>
+          <select id="categoryId" name="categoryId">
+            <option value="">No category</option>
+            <% categories.forEach(function(c) { %>
+              <option value="<%= c._id %>" data-type="<%= c.type %>" <%= transaction.categoryId && String(transaction.categoryId) === String(c._id) ? 'selected' : '' %>><%= c.name %> (<%= c.type %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div>
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" value="<%= new Date(transaction.date).toISOString().slice(0,10) %>" required />
+        </div>
+      </div>
+
+      <label for="notes">Notes</label>
+      <textarea id="notes" name="notes" maxlength="500" rows="3"><%= transaction.notes %></textarea>
+
+      <label for="attachments">Add more receipts / documents (up to 5 files, 8 MB each)</label>
+      <input type="file" id="attachments" name="attachments" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.txt,.doc,.docx" />
+
+      <div class="form-actions">
+        <a href="/transactions/<%= transaction._id %>" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </main>
+<%- include('../partials/footer') %>
+</body>
+</html>

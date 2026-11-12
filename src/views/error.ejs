@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<%- include('partials/head') %>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1><%= status || 500 %></h1>
+      <p><%= message %></p>
+      <a class="btn btn-primary" href="/dashboard">Back to Dashboard</a>
+    </div>
+  </main>
+</body>
+</html>
